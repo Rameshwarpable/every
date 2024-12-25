@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothing Store - Cart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">XYZSTORE</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="offer.html" class="active">Offer Zone</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="pp.html" class="active">Privacy Policy</a></li>
+            <li><a href="feedback.html" class="active">Feedback</a></li>
+            <li><a href="blog.html">Blog</a></li>            
+            <li><a href="help.html" class="active">Help Centre</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="cart-section">
+            <h2>Your Shopping Cart</h2>
+
+            <!-- Cart Item -->
+            <div class="cart-item" id="cart-item2">
+                <img src="https://th.bing.com/th/id/OIP.ZYj0BllSjUAuWsj_-GOrfgAAAA?w=162&h=199&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="Product">
+                <div class="item-details">
+                    <h3>Men Solid Polo Neck Pure Cotton Black T-Shirt Special price</h3>
+                    <p>Size: 32</p>
+                    <p>Color: black</p>
+                    <div class="quantity">
+                        <button class="decrease" onclick="updateQuantity('item2', -1)">-</button>
+                        <input type="number" id="item2" value="1" min="1" readonly>
+                        <button class="increase" onclick="updateQuantity('item2', 1)">+</button>
+                    </div>
+                </div>
+                <div class="item-price">
+                    <span id="price-item2">RS 399</span>
+                </div>
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="cart-summary">
+                <h3>Cart Summary</h3>
+                <p>Total Items: <span id="total-items">1</span></p>
+                <p>Total Price: <span id="total-price">₹399</span></p>
+                <a href="delivery.html"><button class="checkout-btn">Proceed to checkout</button></a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2047 XYZSTORE. All rights reserved.</p>
+            <ul class="social-links">
+                <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
+                <li><a href="https://www.instagram.com" target="_blank">Instagram</a></li>
+                <li><a href="https://www.twitter.com" target="_blank">Twitter</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Cart -->
+    <script>
+        // Initial cart data
+        const cart = {
+            items: [
+                {
+                    id: 'item2',
+                    name: 'Men Solid Polo Neck Pure Cotton Black T-Shirt Special price',
+                    price: 399,
+                    quantity: 1
+                }
+            ]
+        };
+
+        // Update item quantity
+        function updateQuantity(itemId, change) {
+            const item = cart.items.find(item => item.id === itemId);
+            if (item) {
+                item.quantity += change;
+
+                // Ensure quantity does not go below 1
+                if (item.quantity < 1) {
+                    item.quantity = 1;
+                }
+
+                // Update UI with new quantity and price
+                updateCartUI(itemId, item.quantity);
+            }
+        }
+
+        // Update the cart UI with new values
+        function updateCartUI(itemId, quantity) {
+            const item = cart.items.find(item => item.id === itemId);
+
+            if (item) {
+                // Update quantity input field
+                document.getElementById(itemId).value = quantity;
+
+                // Update price for this item
+                const priceElement = document.getElementById('price-' + itemId);
+                priceElement.textContent = 'RS ' + (item.price * quantity);
+
+                // Update the overall cart summary (total items and price)
+                updateCartSummary();
+            }
+        }
+
+        // Update cart summary (total items and total price)
+        function updateCartSummary() {
+            let totalItems = 0;
+            let totalPrice = 0;
+
+            // Calculate total items and total price
+            cart.items.forEach(item => {
+                totalItems += item.quantity;
+                totalPrice += item.price * item.quantity;
+            });
+
+            // Update UI for total items and total price
+            document.getElementById('total-items').textContent = totalItems;
+            document.getElementById('total-price').textContent = '₹' + totalPrice;
+        }
+
+        // Initialize cart UI on page load
+        window.onload = function() {
+            cart.items.forEach(item => {
+                updateCartUI(item.id, item.quantity);
+            });
+        };
+    </script>
+
+</body>
+</html>
